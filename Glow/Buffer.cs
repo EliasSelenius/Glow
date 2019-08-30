@@ -15,7 +15,7 @@ namespace Glow {
 
         public void Initialize(T[] data, BufferUsageHint hint) {
             GL.BindBuffer(BufferTarget.ArrayBuffer, Handle);
-            GL.BufferData(BufferTarget.ArrayBuffer, System.Runtime.InteropServices.Marshal.SizeOf<T>(), data, hint);
+            GL.BufferData(BufferTarget.ArrayBuffer, System.Runtime.InteropServices.Marshal.SizeOf<T>() * data.Length, data, hint);
             GL.BindBuffer(BufferTarget.ArrayBuffer, NullHandle);
         }
 

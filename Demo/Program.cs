@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.IO;
+
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using Glow;
@@ -14,18 +16,39 @@ namespace Demo {
 
             GameWindow w = new GameWindow();
 
+            ShaderProgram sp = null;
+
             VertexArray vao = null;
-
+            Buffer<float> vbo = null;
+            Buffer<uint> ebo = null;
+             
             w.Load += (s, a) => {
-                Buffer<float> b = new Buffer<float>();
-                b.Initialize(new float[] { 1 }, OpenTK.Graphics.OpenGL4.BufferUsageHint.StaticDraw);
 
-                var b2 = new Buffer<uint>();
-                b2.Initialize(new uint[] { }, OpenTK.Graphics.OpenGL4.BufferUsageHint.StaticDraw);
+                GL.ClearColor(0, 0, 0, 1);
+
+                var frag = new Shader(ShaderType.FragmentShader, File.ReadAllText("frag.glsl"));
+                var vert = new Shader(ShaderType.VertexShader, File.ReadAllText("vert.glsl"));
+                sp = new ShaderProgram(frag, vert);
+                frag.Dispose();
+                vert.Dispose();
+
+                vbo = new Buffer<float>();
+                vbo.Initialize(new float[] {
+                    -.5f, -.5f, 0,
+                    0, .5f, 0,
+                    .5f, -.5f, 0
+                }, BufferUsageHint.StaticDraw);
+
+                ebo = new Buffer<uint>();
+                ebo.Initialize(new uint[] {
+                    0, 1, 2
+                }, BufferUsageHint.StaticDraw);
 
                 vao = new VertexArray();
-                vao.SetBuffer(OpenTK.Graphics.OpenGL4.BufferTarget.ArrayBuffer, b);
-                vao.SetBuffer(OpenTK.Graphics.OpenGL4.BufferTarget.ElementArrayBuffer, b2);
+                vao.SetBuffer(BufferTarget.ArrayBuffer, vbo);
+                vao.SetBuffer(BufferTarget.ElementArrayBuffer, ebo);
+
+                vao.AttribPointer(sp.GetAttribLocation("pos"), 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, 0);
 
 
                 foreach (var item in GLObject.Instances) {
@@ -37,10 +60,18 @@ namespace Demo {
 
             w.RenderFrame += (s, e) => {
                 GL.Clear(ClearBufferMask.ColorBufferBit);
-                vao.DrawArrays(PrimitiveType.Triangles, 0, 3);
+
+                sp.Use();
+                //vao.DrawArrays(PrimitiveType.Triangles, 0, 9);
+                vao.DrawElements(PrimitiveType.Triangles, 3, DrawElementsType.UnsignedInt);
+
                 GL.Flush();
                 w.SwapBuffers();
 
+            };
+
+            w.Resize += (s, e) => {
+                GL.Viewport(0, 0, w.Width, w.Height);
             };
 
             w.Run();
