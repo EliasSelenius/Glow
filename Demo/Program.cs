@@ -34,9 +34,9 @@ namespace Demo {
 
                 vbo = new Buffer<float>();
                 vbo.Initialize(new float[] {
-                    -.5f, -.5f, 0,
-                    0, .5f, 0,
-                    .5f, -.5f, 0
+                    -.5f, -.5f, 0, 0, 0,
+                    0, .5f, 0, .5f, 1,
+                    .5f, -.5f, 0, 1, 0
                 }, BufferUsageHint.StaticDraw);
 
                 ebo = new Buffer<uint>();
@@ -48,7 +48,8 @@ namespace Demo {
                 vao.SetBuffer(BufferTarget.ArrayBuffer, vbo);
                 vao.SetBuffer(BufferTarget.ElementArrayBuffer, ebo);
 
-                vao.AttribPointer(sp.GetAttribLocation("pos"), 3, VertexAttribPointerType.Float, false, sizeof(float) * 3, 0);
+                vao.AttribPointer(sp.GetAttribLocation("pos"), 3, VertexAttribPointerType.Float, false, sizeof(float) * 5, 0);
+                vao.AttribPointer(sp.GetAttribLocation("uv"), 2, VertexAttribPointerType.Float, false, sizeof(float) * 5, sizeof(float) * 3);
 
 
                 foreach (var item in GLObject.Instances) {
