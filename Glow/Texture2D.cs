@@ -14,6 +14,13 @@ namespace Glow {
 
         public readonly Color32bit[,] Pixels;
 
+        public Texture2D(Color32bit[,] pixels) : base(GL.GenTexture()) {
+            Width = pixels.GetLength(0);
+            Height = pixels.GetLength(1);
+            this.Pixels = pixels;
+            Apply();
+        }
+
         public Texture2D(int w, int h) : base(GL.GenTexture()) {
             Width = w; Height = h;
             Pixels = new Color32bit[Width, Height];
@@ -34,6 +41,9 @@ namespace Glow {
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             GL.BindTexture(TextureTarget.Texture2D, NullHandle);
         }
+
+        public void Bind(TextureTarget target) => GL.BindTexture(target, Handle);
+        public static void Unbind(TextureTarget target) => GL.BindTexture(target, NullHandle);
 
         protected override void Dispose(bool manual) {
             if (manual && HasResources) {
