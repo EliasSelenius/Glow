@@ -39,9 +39,9 @@ namespace Demo {
                 // setting up buffers
                 vbo = new Buffer<float>();
                 vbo.Initialize(new float[] {
-                    -.5f, -.5f, 0, 0, 0,
-                    0, .5f, 0, .5f, 1,
-                    .5f, -.5f, 0, 1, 0
+                    -.5f, -.5f, 0, -0.5f, -0.5f,
+                    0, .5f, 0, .5f, 1.5f,
+                    .5f, -.5f, 0, 1.5f, -0.5f
                 }, BufferUsageHint.StaticDraw);
 
                 ebo = new Buffer<uint>();
@@ -65,7 +65,11 @@ namespace Demo {
                 var pixels = new Color32bit[16, 16];
                 for (int x = 0; x < 16; x++) {
                     for (int y = 0; y < 16; y++) {
-                        pixels[x, y] = new Color32bit((float)r.NextDouble(), (float)r.NextDouble(), (float)r.NextDouble());
+                        if (x == 0 || y == 0 || x == 15 || y == 15) {
+                            pixels[x, y] = new Color32bit(1.0f);
+                        } else {
+                            pixels[x, y] = new Color32bit((float)r.NextDouble(), (float)r.NextDouble(), (float)r.NextDouble());
+                        }
                     }
                 }
                 texture = new Texture2D(pixels);

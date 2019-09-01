@@ -37,10 +37,19 @@ namespace Glow {
 
         public void Apply() {
             GL.BindTexture(TextureTarget.Texture2D, Handle);
+
+            // testing:
+            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.MirroredRepeat);
+            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            //GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.Float, Pixels);
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             GL.BindTexture(TextureTarget.Texture2D, NullHandle);
         }
+
+        
 
         public void Bind(TextureTarget target) => GL.BindTexture(target, Handle);
         public static void Unbind(TextureTarget target) => GL.BindTexture(target, NullHandle);
