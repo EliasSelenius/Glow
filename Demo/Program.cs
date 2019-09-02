@@ -87,7 +87,7 @@ namespace Demo {
                 GL.Clear(ClearBufferMask.ColorBufferBit);
 
                 sp.Use();
-                texture.Bind(TextureTarget.Texture2D);
+                texture.Bind(TextureUnit.Texture0);
                 //vao.DrawArrays(PrimitiveType.Triangles, 0, 9);
                 vao.DrawElements(PrimitiveType.Triangles, 3, DrawElementsType.UnsignedInt);
 

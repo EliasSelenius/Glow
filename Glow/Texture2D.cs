@@ -49,9 +49,12 @@ namespace Glow {
             GL.BindTexture(TextureTarget.Texture2D, NullHandle);
         }
 
-        
 
-        public void Bind(TextureTarget target) => GL.BindTexture(target, Handle);
+
+        public void Bind(TextureUnit unit) {
+            GL.ActiveTexture(unit);
+            GL.BindTexture(TextureTarget.Texture2D, Handle);
+        }
         public static void Unbind(TextureTarget target) => GL.BindTexture(target, NullHandle);
 
         protected override void Dispose(bool manual) {
