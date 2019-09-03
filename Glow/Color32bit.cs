@@ -4,7 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Runtime.InteropServices;
+
 namespace Glow {
+
+    [StructLayout(LayoutKind.Sequential)]
     public struct Color32bit {
         public float Red, Green, Blue, Alpha;
 
