@@ -51,10 +51,13 @@ namespace Glow {
         public void SetVec4(int loc, float x, float y, float z, float w) => GL.ProgramUniform4(Handle, loc, x, y, z, w);
         public void SetVec4(string name, float x, float y, float z, float w) => GL.ProgramUniform4(Handle, GL.GetUniformLocation(Handle, name), x, y, z, w);
 
+        #region SetMat4
+
         public void SetMat4(int loc, float[] value, bool transpose = false) => GL.ProgramUniformMatrix4(Handle, loc, 16, transpose, value);
         public void SetMat4(string name, float[] value, bool transpose = false) => GL.ProgramUniformMatrix4(Handle, GL.GetUniformLocation(Handle, name), 16, transpose, value);
         public void SetMat4(int loc, Matrix4 value, bool transpose = false) => GL.ProgramUniformMatrix4(Handle, loc, transpose, ref value);
         public void SetMat4(string name, Matrix4 value, bool transpose = false) => GL.ProgramUniformMatrix4(Handle, GL.GetUniformLocation(Handle, name), transpose, ref value);
+        #endregion
 
         #endregion
 
