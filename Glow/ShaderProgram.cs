@@ -16,7 +16,7 @@ namespace Glow {
 
         public void Use() => GL.UseProgram(Handle);
 
-        private void Link(Shader[] shaders) {
+        public void Link(Shader[] shaders) {
             foreach (var shader in shaders) {
                 GL.AttachShader(Handle, shader.Handle);
             }
@@ -44,12 +44,18 @@ namespace Glow {
 
         public void SetVec2(int loc, float x, float y) => GL.ProgramUniform2(Handle, loc, x, y);
         public void SetVec2(string name, float x, float y) => GL.ProgramUniform2(Handle, GL.GetUniformLocation(Handle, name), x, y);
+        public void SetVec2(int loc, Vector2 vec) => GL.ProgramUniform2(Handle, loc, vec);
+        public void SetVec2(string name, Vector2 vec) => GL.ProgramUniform2(Handle, GL.GetUniformLocation(Handle, name), vec);
 
         public void SetVec3(int loc, float x, float y, float z) => GL.ProgramUniform3(Handle, loc, x, y, z);
         public void SetVec3(string name, float x, float y, float z) => GL.ProgramUniform3(Handle, GL.GetUniformLocation(Handle, name), x, y, z);
+        public void SetVec3(int loc, Vector3 vec) => GL.ProgramUniform3(Handle, loc, vec);
+        public void SetVec3(string name, Vector3 vec) => GL.ProgramUniform3(Handle, GL.GetUniformLocation(Handle, name), vec);
 
         public void SetVec4(int loc, float x, float y, float z, float w) => GL.ProgramUniform4(Handle, loc, x, y, z, w);
         public void SetVec4(string name, float x, float y, float z, float w) => GL.ProgramUniform4(Handle, GL.GetUniformLocation(Handle, name), x, y, z, w);
+        public void SetVec4(int loc, Vector4 vec) => GL.ProgramUniform4(Handle, loc, vec);
+        public void SetVec4(string name, Vector4 vec) => GL.ProgramUniform4(Handle, GL.GetUniformLocation(Handle, name), vec);
 
         #region SetMat4
 

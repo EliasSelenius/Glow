@@ -13,6 +13,8 @@ namespace Glow {
 
         public readonly GameWindow Window;
 
+        public float DeltaTime;
+
         public Applet() {
             Window = new GameWindow(1600, 900, GraphicsMode.Default, "");
 
@@ -21,6 +23,15 @@ namespace Glow {
             Window.RenderFrame += Window_RenderFrame;
             Window.UpdateFrame += Window_UpdateFrame;
             Window.Resize += Window_Resize;
+        }
+
+        public ShaderProgram CreateShader(string fragsrc, string vertsrc) {
+            var f = new Shader(ShaderType.FragmentShader, fragsrc);
+            var v = new Shader(ShaderType.VertexShader, vertsrc);
+            var res = new ShaderProgram(f, v);
+            f.Dispose();
+            v.Dispose();
+            return res;
         }
 
         public void Start() {
@@ -34,6 +45,7 @@ namespace Glow {
         }
 
         private void Window_UpdateFrame(object sender, FrameEventArgs e) {
+            DeltaTime = (float)e.Time;
             Update();
         }
 
@@ -51,7 +63,7 @@ namespace Glow {
         }
 
         private void Window_Load(object sender, EventArgs e) {
-            GL.ClearColor(.5f, .5f, .5f, 1);
+            GL.ClearColor(.3f, .3f, .3f, 1);
 
             Load();
         }
