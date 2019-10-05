@@ -11,6 +11,20 @@ namespace Glow {
 
         public static readonly List<GLObject> Instances = new List<GLObject>();
 
+        public static string ListInstances() {
+            var str = "";
+            //foreach (var item in from o in Instances
+            //                     orderby o.GetType()
+            //                     select o) {
+            //    str += item.ToString() + "\n";
+            //}
+
+            for (int i = 0; i < Instances.Count; i++) {
+                str += Instances[i].ToString() + "\n";
+            }
+            return str;
+        }
+
         public int Handle { get; private set; } = NullHandle;
         public bool HasResources => Handle != NullHandle;
 

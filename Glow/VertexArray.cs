@@ -36,6 +36,10 @@ namespace Glow {
             GL.DrawElements(type, count, elmtype, 0);
         }
 
+        public static void Unbind() {
+            GL.BindVertexArray(NullHandle);
+        }
+
         protected override void Dispose(bool manual) {
             if (manual && HasResources) {
                 GL.DeleteVertexArray(Handle);

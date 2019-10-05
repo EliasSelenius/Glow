@@ -35,7 +35,7 @@ namespace Glow {
             Apply();
         }
 
-        public void Apply() {
+        public void Apply(bool genMipMap = true) {
             GL.BindTexture(TextureTarget.Texture2D, Handle);
 
             // testing:
@@ -45,7 +45,9 @@ namespace Glow {
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.Float, Pixels);
-            GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+            if (genMipMap) {
+                GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+            }
             GL.BindTexture(TextureTarget.Texture2D, NullHandle);
         }
 
