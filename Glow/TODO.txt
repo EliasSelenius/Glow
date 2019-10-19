@@ -6,6 +6,8 @@
 
  - cubemap object
 
- - abstract texture class (for texture2D/3D classes)
+ - abstract texture class (for texture2D/3D and cubemap?)
  - api for texture parameters
- - 
+
+ - Buffer.SubData()
+ - Buffer.GetSubData()

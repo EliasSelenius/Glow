@@ -19,6 +19,18 @@ namespace Glow {
             GL.BindBuffer(BufferTarget.ArrayBuffer, NullHandle);
         }
 
+        // TODO: needs to be tested
+        public void SubData(int offset, T[] data) {
+            GL.NamedBufferSubData(Handle, new IntPtr(offset), System.Runtime.InteropServices.Marshal.SizeOf<T>() * data.Length, data);
+        }
+
+        // TODO: needs to be tested
+        public T[] GetSubData(int offset, int size) {
+            T[] data = null;
+            GL.GetNamedBufferSubData(Handle, new IntPtr(offset), size, data);
+            return data;
+        }
+
         public void Bind(BufferTarget target) => GL.BindBuffer(target, Handle);
         public static void Unbind(BufferTarget target) => GL.BindBuffer(target, NullHandle);
 

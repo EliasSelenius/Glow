@@ -72,8 +72,9 @@ namespace Demo {
                         }
                     }
                 }
-                texture = new Texture2D(pixels);
-
+                texture = new Texture2D(pixels) {
+                    Filter = Filter.Nearest,
+                };
 
 
                 foreach (var item in GLObject.Instances) {
@@ -94,6 +95,12 @@ namespace Demo {
                 GL.Flush();
                 w.SwapBuffers();
 
+            };
+
+            w.UpdateFrame += (s, e) => {
+                var r = new Random();
+                texture.Pixels[r.Next(texture.Width), r.Next(texture.Height)] = new Color32bit((float)r.NextDouble(), (float)r.NextDouble(), (float)r.NextDouble());
+                texture.Apply();
             };
 
             w.Resize += (s, e) => {
