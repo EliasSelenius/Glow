@@ -10,10 +10,10 @@ namespace Glow {
     public class Shader : GLObject {
 
         public Shader(ShaderType type, string src) : base(GL.CreateShader(type)) {
-            GL.ShaderSource(Handle, src);
-            GL.CompileShader(Handle);
+            GL.ShaderSource(gl_handle, src);
+            GL.CompileShader(gl_handle);
 
-            var info = GL.GetShaderInfoLog(Handle);
+            var info = GL.GetShaderInfoLog(gl_handle);
             if (!string.IsNullOrWhiteSpace(info)) {
                 // TODO: log info somewhere
                 Console.WriteLine(info);
@@ -21,8 +21,8 @@ namespace Glow {
         }
 
         protected override void Dispose(bool manual) {
-            if (manual && HasResources) {
-                GL.DeleteShader(Handle);
+            if (manual && has_resources) {
+                GL.DeleteShader(gl_handle);
             }
         }
     }

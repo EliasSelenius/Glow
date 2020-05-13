@@ -31,8 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nums">
-      <HintPath>..\..\Nums\bin\Debug\Nums.dll</HintPath>
+    <Reference Include="Nums, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Nums\Nums\bin\Debug\netstandard2.1\Nums.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.3.1.0\lib\net20\OpenTK.dll</HintPath>
@@ -50,15 +51,18 @@
   <ItemGroup>
     <Compile Include="Applet.cs" />
     <Compile Include="Buffer.cs" />
-    <Compile Include="Color32bit.cs" />
-    <Compile Include="Color8bit.cs" />
+    <Compile Include="color.cs" />
+    <Compile Include="color32.cs" />
+    <Compile Include="Cubemap.cs" />
     <Compile Include="Framebuffer.cs" />
     <Compile Include="GLObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderbuffer.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="ShaderProgram.cs" />
+    <Compile Include="Texture.cs" />
     <Compile Include="Texture2D.cs" />
-    <Compile Include="VertexArray.cs" />
+    <Compile Include="Vertexarray.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />

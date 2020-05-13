@@ -25,28 +25,29 @@ namespace Glow {
             return str;
         }
 
-        public int Handle { get; private set; } = NullHandle;
-        public bool HasResources => Handle != NullHandle;
+        public int gl_handle { get; private set; } = NullHandle;
+        public bool has_resources => gl_handle != NullHandle;
 
         public GLObject(int h) {
-            this.Handle = h;
+            this.gl_handle = h;
             Instances.Add(this);
         }
 
         public void Dispose() {
             this.Dispose(true);
-            this.Handle = NullHandle;
+            this.gl_handle = NullHandle;
             Instances.Remove(this);
             GC.SuppressFinalize(this);
         }
 
         ~GLObject() {
             Dispose(false);
+            // no need to remove this from Instances, since destructor will not be called when there is a refrence in Instances
         }
 
         protected abstract void Dispose(bool manual);
 
-        public override string ToString() => GetType().Name + (HasResources ? $" ({Handle})" : " (null)");
-        public override int GetHashCode() => Handle.GetHashCode();
+        public override string ToString() => GetType().Name + (has_resources ? $" ({gl_handle})" : " (null)");
+        public override int GetHashCode() => gl_handle.GetHashCode();
     }
 }

@@ -9,6 +9,7 @@ using System.IO;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using Glow;
+using System.Diagnostics;
 
 namespace Demo {
     class Program {
@@ -18,7 +19,7 @@ namespace Demo {
 
             ShaderProgram sp = null;
 
-            VertexArray vao = null;
+            Vertexarray vao = null;
             Buffer<float> vbo = null;
             Buffer<uint> ebo = null;
 
@@ -38,29 +39,29 @@ namespace Demo {
 
                 // setting up buffers
                 vbo = new Buffer<float>();
-                vbo.Initialize(new float[] {
+                vbo.bufferdata(new float[] {
                     -.5f, -.5f, 0, -0.5f, -0.5f,
                     0, .5f, 0, .5f, 1.5f,
                     .5f, -.5f, 0, 1.5f, -0.5f
                 }, BufferUsageHint.StaticDraw);
 
                 ebo = new Buffer<uint>();
-                ebo.Initialize(new uint[] {
+                ebo.bufferdata(new uint[] {
                     0, 1, 2
                 }, BufferUsageHint.StaticDraw);
 
 
                 // setting up vao
-                vao = new VertexArray();
-                vao.SetBuffer(BufferTarget.ArrayBuffer, vbo);
-                vao.SetBuffer(BufferTarget.ElementArrayBuffer, ebo);
+                vao = new Vertexarray();
+                vao.set_buffer(BufferTarget.ArrayBuffer, vbo);
+                vao.set_buffer(BufferTarget.ElementArrayBuffer, ebo);
 
-                vao.AttribPointer(sp.GetAttribLocation("pos"), 3, VertexAttribPointerType.Float, false, sizeof(float) * 5, 0);
-                vao.AttribPointer(sp.GetAttribLocation("uv"), 2, VertexAttribPointerType.Float, false, sizeof(float) * 5, sizeof(float) * 3);
+                vao.attrib_pointer(sp.getAttribLocation("pos"), 3, VertexAttribPointerType.Float, false, sizeof(float) * 5, 0);
+                vao.attrib_pointer(sp.getAttribLocation("uv"), 2, VertexAttribPointerType.Float, false, sizeof(float) * 5, sizeof(float) * 3);
 
 
                 // setting up texture
-
+                /*
                 var r = new Random();
                 var pixels = new Color32bit[16, 16];
                 for (int x = 0; x < 16; x++) {
@@ -74,8 +75,12 @@ namespace Demo {
                 }
                 texture = new Texture2D(pixels) {
                     Filter = Filter.Nearest,
-                };
-
+                };*/
+                var sw = new Stopwatch();
+                sw.Start();
+                texture = new Texture2D("Skybox_back.png");
+                sw.Stop();
+                Console.WriteLine(sw.ElapsedMilliseconds);
 
                 foreach (var item in GLObject.Instances) {
                     Console.WriteLine(item);
@@ -87,20 +92,25 @@ namespace Demo {
             w.RenderFrame += (s, e) => {
                 GL.Clear(ClearBufferMask.ColorBufferBit);
 
-                sp.Use();
-                texture.Bind(TextureUnit.Texture0);
+                sp.use();
+                texture.bind(TextureUnit.Texture0);
                 //vao.DrawArrays(PrimitiveType.Triangles, 0, 9);
-                vao.DrawElements(PrimitiveType.Triangles, 3, DrawElementsType.UnsignedInt);
+                vao.draw_elements(PrimitiveType.Triangles, 3, DrawElementsType.UnsignedInt);
 
                 GL.Flush();
                 w.SwapBuffers();
 
             };
+            var r = new Random();
 
             w.UpdateFrame += (s, e) => {
-                var r = new Random();
-                texture.Pixels[r.Next(texture.Width), r.Next(texture.Height)] = new Color32bit((float)r.NextDouble(), (float)r.NextDouble(), (float)r.NextDouble());
-                texture.Apply();
+                //texture.pixels[r.Next(texture.width), r.Next(texture.height)] = new color((float)r.NextDouble(), (float)r.NextDouble(), (float)r.NextDouble());
+                var h = r.Next(texture.height);
+                for (int i = 0; i < texture.width; i++) {
+                    texture.pixels[i, h] = new color(1);
+                }
+
+                texture.apply();
             };
 
             w.Resize += (s, e) => {
