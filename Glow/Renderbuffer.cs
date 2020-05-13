@@ -15,12 +15,12 @@ namespace Glow {
 
         public Renderbuffer(RenderbufferStorage storage, int width, int height) : base(GL.GenRenderbuffer()) {
             internal_format = storage;
-            this.width = width;
-            this.height = height;
             resize(width, height);
         }
 
         public void resize(int w, int h) {
+            width = w;
+            height = h;
             bind();
             GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, internal_format, width, height);
             unbind();
