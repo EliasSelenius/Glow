@@ -16,21 +16,21 @@ namespace Glow {
             set {
                 GL.BindTexture(target, gl_handle);
                 GL.TexParameter(target, TextureParameterName.TextureWrapS, (int)value);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
             }
         }
         public WrapMode wrapT {
             set {
                 GL.BindTexture(target, gl_handle);
                 GL.TexParameter(target, TextureParameterName.TextureWrapT, (int)value);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
             }
         }
         public WrapMode wrapR {
             set {
                 GL.BindTexture(target, gl_handle);
                 GL.TexParameter(target, TextureParameterName.TextureWrapR, (int)value);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
             }
         }
         public WrapMode wrap {
@@ -39,7 +39,7 @@ namespace Glow {
                 GL.TexParameter(target, TextureParameterName.TextureWrapS, (int)value);
                 GL.TexParameter(target, TextureParameterName.TextureWrapT, (int)value);
                 GL.TexParameter(target, TextureParameterName.TextureWrapR, (int)value);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
             }
         }
 

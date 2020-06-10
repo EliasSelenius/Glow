@@ -33,14 +33,14 @@ namespace Glow {
             set {
                 GL.BindTexture(target, gl_handle);
                 GL.TexParameter(target, TextureParameterName.TextureMinFilter, (int)value);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
             }
         }
         public Filter mag_filter {
             set {
                 GL.BindTexture(target, gl_handle);
                 GL.TexParameter(target, TextureParameterName.TextureMagFilter, (int)value);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
             }
         }
         public Filter filter {
@@ -48,7 +48,7 @@ namespace Glow {
                 GL.BindTexture(target, gl_handle);
                 GL.TexParameter(target, TextureParameterName.TextureMinFilter, (int)value);
                 GL.TexParameter(target, TextureParameterName.TextureMagFilter, (int)value);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Glow {
             if (bound_textures.ContainsValue(this)) {
                 var unit = bound_textures.Where(x => x.Value == this).First().Key;
                 GL.ActiveTexture(unit);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
                 bound_textures.Remove(unit);
             }
         }

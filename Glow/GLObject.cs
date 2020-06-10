@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using OpenTK.Graphics.OpenGL4;
+
 namespace Glow {
     public abstract class GLObject : IDisposable {
 
-        public const int NullHandle = 0;
+        public const int null_handle = 0;
 
         public static readonly List<GLObject> Instances = new List<GLObject>();
 
@@ -25,17 +27,28 @@ namespace Glow {
             return str;
         }
 
-        public int gl_handle { get; private set; } = NullHandle;
-        public bool has_resources => gl_handle != NullHandle;
+        public static void check_glerror() {
+            var code = GL.GetError();
+            if (code != ErrorCode.NoError) {
+                throw new Exception("OpenGL error: " + code);
+            }
+        }
 
-        public GLObject(int h) {
+        public int gl_handle { get; private set; } = null_handle;
+        public bool has_resources => gl_handle != null_handle;
+
+        // Note: default_wrapper is used to create fake object to represent default objects for example: Framebuffer.default_buffer
+        internal GLObject(int h, bool default_wrapper = false) {
             this.gl_handle = h;
-            Instances.Add(this);
+            if (!default_wrapper) { 
+                if (gl_handle == null_handle) throw new Exception("Failed to generate " + this.GetType().Name);
+                Instances.Add(this);
+            }
         }
 
         public void Dispose() {
             this.Dispose(true);
-            this.gl_handle = NullHandle;
+            this.gl_handle = null_handle;
             Instances.Remove(this);
             GC.SuppressFinalize(this);
         }

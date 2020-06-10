@@ -7,7 +7,14 @@ using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Glow {
+    public static class Buffer {
+        public static Buffer<Type> create<Type>(BufferUsageHint hint, Type[] data) where Type : struct => new Buffer<Type>(data, hint);
+        public static Buffer<Type> create<Type>(Type[] data) where Type : struct => new Buffer<Type>(data, BufferUsageHint.StaticDraw);
+
+    }
+
     public class Buffer<T> : GLObject where T : struct {
+
 
         public readonly int element_bytesize = -1;
 
@@ -22,7 +29,7 @@ namespace Glow {
         public void bufferdata(T[] data, BufferUsageHint hint) {
             GL.BindBuffer(BufferTarget.ArrayBuffer, gl_handle);
             GL.BufferData(BufferTarget.ArrayBuffer, element_bytesize * data.Length, data, hint);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, NullHandle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, null_handle);
         }
 
         // TODO: needs to be tested
@@ -50,7 +57,7 @@ namespace Glow {
 
 
         public void bind(BufferTarget target) => GL.BindBuffer(target, gl_handle);
-        public static void unbind(BufferTarget target) => GL.BindBuffer(target, NullHandle);
+        public static void unbind(BufferTarget target) => GL.BindBuffer(target, null_handle);
 
         protected override void Dispose(bool manual) {
             if(manual && has_resources) {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Glow {
-    public class Renderbuffer : GLObject, IAttachment {
+    public class Renderbuffer : GLObject, Framebuffer.IAttachment {
 
         public int width { get; private set; }
         public int height { get; private set; }
@@ -31,7 +31,7 @@ namespace Glow {
         }
 
         public static void unbind() {
-            GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, NullHandle);
+            GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, null_handle);
         }
 
         protected override void Dispose(bool manual) {

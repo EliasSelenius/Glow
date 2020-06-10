@@ -10,6 +10,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using Glow;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace Demo {
     class Program {
@@ -20,7 +21,8 @@ namespace Demo {
             ShaderProgram sp = null;
 
             Vertexarray vao = null;
-            Buffer<float> vbo = null;
+            Buffer<float> vbo_pos = null;
+            Buffer<float> vbo_uv = null;
             Buffer<uint> ebo = null;
 
             Texture2D texture = null;
@@ -38,27 +40,33 @@ namespace Demo {
 
 
                 // setting up buffers
-                vbo = new Buffer<float>();
-                vbo.bufferdata(new float[] {
-                    -.5f, -.5f, 0, -0.5f, -0.5f,
-                    0, .5f, 0, .5f, 1.5f,
-                    .5f, -.5f, 0, 1.5f, -0.5f
-                }, BufferUsageHint.StaticDraw);
+                vbo_pos = Glow.Buffer.create(new float[] {
+                    -.5f, -.5f, 0,
+                    0, .5f, 0,
+                    .5f, -.5f, 0
+                });
 
-                ebo = new Buffer<uint>();
-                ebo.bufferdata(new uint[] {
+                vbo_uv = Glow.Buffer.create(new float[] {
+                    -0.5f, -0.5f,
+                    .5f, 1.5f,
+                    1.5f, -0.5f
+                });
+
+                ebo = Glow.Buffer.create(new uint[] {
                     0, 1, 2
-                }, BufferUsageHint.StaticDraw);
-
+                });
 
                 // setting up vao
+                int pos_loc = sp.get_attrib_location("pos");
+                int uv_loc = sp.get_attrib_location("uv");
+
                 vao = new Vertexarray();
-                vao.set_buffer(BufferTarget.ArrayBuffer, vbo);
-                vao.set_buffer(BufferTarget.ElementArrayBuffer, ebo);
+                vao.set_elementbuffer(ebo);
 
-                vao.attrib_pointer(sp.getAttribLocation("pos"), 3, VertexAttribPointerType.Float, false, sizeof(float) * 5, 0);
-                vao.attrib_pointer(sp.getAttribLocation("uv"), 2, VertexAttribPointerType.Float, false, sizeof(float) * 5, sizeof(float) * 3);
+                vao.set_attribute_pointer(pos_loc, AttribType.Vec3, vbo_pos, sizeof(float) * 3);
+                vao.set_attribute_pointer(uv_loc, AttribType.Vec2, vbo_uv, sizeof(float) * 2);
 
+                GLObject.check_glerror();
 
                 // setting up texture
                 /*
@@ -103,6 +111,7 @@ namespace Demo {
             };
             var r = new Random();
 
+            
             w.UpdateFrame += (s, e) => {
                 //texture.pixels[r.Next(texture.width), r.Next(texture.height)] = new color((float)r.NextDouble(), (float)r.NextDouble(), (float)r.NextDouble());
                 var h = r.Next(texture.height);

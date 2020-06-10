@@ -8,7 +8,7 @@ using System.Drawing;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Glow {
-    public class Texture2D : Texture, IAttachment {
+    public class Texture2D : Texture, Framebuffer.IAttachment {
 
         public int width { get; private set; }
         public int height { get; private set; }
@@ -26,14 +26,14 @@ namespace Glow {
             set {
                 GL.BindTexture(target, gl_handle);
                 GL.TexParameter(target, TextureParameterName.TextureWrapS, (int)value);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
             }
         }
         public WrapMode wrapT {
             set {
                 GL.BindTexture(target, gl_handle);
                 GL.TexParameter(target, TextureParameterName.TextureWrapT, (int)value);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
             }
         }
         public WrapMode wrap {
@@ -41,7 +41,7 @@ namespace Glow {
                 GL.BindTexture(target, gl_handle);
                 GL.TexParameter(target, TextureParameterName.TextureWrapS, (int)value);
                 GL.TexParameter(target, TextureParameterName.TextureWrapT, (int)value);
-                GL.BindTexture(target, NullHandle);
+                GL.BindTexture(target, null_handle);
             }
         }
 
@@ -100,9 +100,7 @@ namespace Glow {
         public void apply(bool genMipMap = true) {
             bind(TextureUnit.Texture0);
             GL.TexImage2D(target, 0, internal_format, width, height, 0, PixelFormat.Rgba, PixelType.Float, pixels);
-            if (genMipMap) {
-                GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
-            }
+            if (genMipMap) GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             unbind();
         }
 
@@ -118,7 +116,7 @@ namespace Glow {
         public void load_pixels() {
             GL.BindTexture(target, gl_handle);
             GL.GetTexImage(target, 0, PixelFormat.Rgba, PixelType.Float, pixels);
-            GL.BindTexture(target, NullHandle);
+            GL.BindTexture(target, null_handle);
         }
 
     }
